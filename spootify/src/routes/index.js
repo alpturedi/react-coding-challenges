@@ -1,6 +1,5 @@
 import React from "react";
 import Discover from "./Discover";
-import { UserContext } from "../contexts/UserContext";
 import { get } from "../api/api";
 
 //Expects location.hash
@@ -49,9 +48,6 @@ async function getPlaylists(updateList) {
 
 export default function Routes(props) {
   // Here you'd return an array of routes
-
-  const values = React.useContext(UserContext);
-
   let location = window.location;
   const currentTime = new Date().getTime();
   const expiryTime = localStorage.getItem("expiry_time");
