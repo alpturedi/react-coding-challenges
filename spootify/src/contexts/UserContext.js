@@ -1,11 +1,15 @@
 import React from "react";
 
 export const defaultValues = {
-  name: "tester",
-  avatar: false,
-  newReleases: "",
-  playlists: ["alp, test"],
-  browse: [],
+  name: false,
+  image: false,
+  newReleases: [],
+  playlists: [],
+  categories: [],
 };
 
-export const UserContext = React.createContext(defaultValues);
+export const UserContext = React.createContext({
+  defaultValues,
+  updateName: () => {},
+  updateList: () => {},
+});

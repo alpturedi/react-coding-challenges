@@ -12,6 +12,17 @@ import { ReactComponent as Avatar } from "../../../assets/images/avatar.svg";
 import "./_sidebar.scss";
 import { UserContext } from "../../../contexts/UserContext";
 
+const { REACT_APP_CLIENT_ID, REACT_APP_CLIENT_REDIRECT } = process.env;
+
+const handleLogin = () => {
+  window.location = `https://accounts.spotify.com/authorize?client_id=${REACT_APP_CLIENT_ID}&redirect_uri=${REACT_APP_CLIENT_REDIRECT}&response_type=token&show_dialog=true`;
+};
+
+const handleLogout = () => {
+  localStorage.clear();
+  window.location = REACT_APP_CLIENT_REDIRECT;
+};
+
 function renderSideBarOption(link, icon, text, { selected } = {}) {
   return (
     <div
@@ -31,8 +42,32 @@ export default function SideBar() {
       <UserContext.Consumer>
         {(context) => (
           <div className="sidebar__profile">
-            <Avatar />
-            <p>{context.name}</p>
+            {context.values.image ? (
+              <img
+                src={context.values.image}
+                width="67.5px"
+                height="67.5px"
+                alt="avatar"
+              />
+            ) : (
+              <Avatar />
+            )}
+
+            {context.values.name ? (
+              <>
+                <p>{context.values.name}</p>
+                <button variant="info" type="submit" onClick={handleLogout}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <p></p>
+                <button variant="info" type="submit" onClick={handleLogin}>
+                  Login to Spotify
+                </button>
+              </>
+            )}
           </div>
         )}
       </UserContext.Consumer>

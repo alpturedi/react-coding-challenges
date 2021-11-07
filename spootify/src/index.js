@@ -9,19 +9,43 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    // State also contains the updater function so it will
-    // be passed down into the context provider
-    this.state = defaultValues;
+    this.updateName = (newName, newImage) => {
+      this.setState((state) => {
+        if (state.values.name !== newName) {
+          state.values.name = newName;
+          state.values.image = newImage;
+          return state;
+        }
+      });
+    };
+
+    this.updateList = (listName, newList) => {
+      this.setState((state) => {
+        if (
+          JSON.stringify(state.values[listName]) !== JSON.stringify(newList)
+        ) {
+          state.values[listName] = newList;
+          return state;
+        }
+      });
+    };
+
+    this.state = {
+      values: defaultValues,
+      updataName: this.updateName,
+      updateLists: this.updateList,
+    };
   }
 
   render() {
-    // The entire state is passed to the provider
     return (
-      <UserContext.Provider value={this.state}>
-        <CoreLayout>
-          <Routes />
-        </CoreLayout>
-      </UserContext.Provider>
+      <React.StrictMode>
+        <UserContext.Provider value={this.state}>
+          <CoreLayout>
+            <Routes updateName={this.updateName} updateList={this.updateList} />
+          </CoreLayout>
+        </UserContext.Provider>
+      </React.StrictMode>
     );
   }
 }
